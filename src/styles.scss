@@ -248,7 +248,7 @@ ngx-material-timepicker-content {
 }
 
 .ribbon-primary {
-    background: #97704f;
+    background:  #97704f;
 }
 .mat-primary{
   background: #97704f!important;
@@ -260,7 +260,7 @@ ngx-material-timepicker-content {
 }
 
 .p-button.p-button-text.p-button-icon-only{
-  color: #97704f!important;
+  color: #18aefa!important;
 }
 
 // .p-button{
@@ -280,11 +280,11 @@ input[type='checkbox'] {
 
 .p-checkbox .p-checkbox-box.p-highlight{
   border-color: #97704f;
-  background: #97704f;
+  background: 18aefa;
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover{
-  border-color: #97704f;
+  border-color: #18aefa;
 }
 
 .btn:disabled, .btn.disabled, fieldset:disabled .btn{
@@ -293,16 +293,20 @@ input[type='checkbox'] {
 }
 
 .p-button.p-button-outlined{
-  color: #97704f;
+  color: #5dbce8;
 }
 
 .p-column-filter-buttonbar .p-button-sm:not(.p-button-outlined){
   color: #ffffff;
-  background: #97704f;
+  background: #5dbce8;
 } 
 
 .p-button.p-button-text {
-  color: #97704f;
+  color:#5dbce8;
+}
+.p-button.p-button-text:hover{
+  color: #fff;
+
 }
 
 ul.p-dropdown-items{
