@@ -47,7 +47,7 @@ export class AddLeaveComponent {
   }
 
   addLeaveFormSubmit() {
-    debugger
+    // debugger
     const formData = this.addLeaveForm.value;
     console.log(this.addLeaveForm.value);
     const paylode = {

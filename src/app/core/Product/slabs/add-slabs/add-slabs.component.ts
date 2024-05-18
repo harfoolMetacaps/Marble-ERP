@@ -197,7 +197,7 @@ export class AddSlabsComponent {
     console.log(this.slabsAddForm.value);
     const payload = {
       slabNo: this.slabsAddForm.value.slabNo,
-      lotDetail: this.slabsAddForm.value.lotDetail._id,
+      lotDetail: this.slabsAddForm.value.lotDetail,
       blockDetails: this.slabsAddForm.value.blockDetails,
       categoryDetail: this.slabsAddForm.value.categoryDetail,
       subCategoryDetail: this.slabsAddForm.value.subCategoryDetail,

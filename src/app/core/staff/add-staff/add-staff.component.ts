@@ -5,6 +5,7 @@ import { staffService } from "../staff.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { WarehouseService } from "../../settings/warehouse/warehouse.service";
+import { HttpErrorResponse } from "@angular/common/http";
 interface data {
   value: string;
 }
@@ -75,34 +76,37 @@ export class AddStaffComponent {
   }
 
   addStaffFormSubmit() {
-    debugger;
+    // debugger
+    const formData = this.addStaffForm.value;
+    console.log("Form data", formData);
+    
     console.log(this.addStaffForm.value);
-    const paylode = {
-      firstName: "kavya",
-      lastName: "Choudhary",
-      dateOfBirth: "30-09-2003",
-      email: "test@gmail.com",
-      mobile: 999999999,
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      dateOfBirth: formData.dateOfBirth,
+      email: formData.email,
+      mobile:formData.mobile,
       warehouseDetails: {
-        _id: "123",
-        name: "test",
+        _id: formData._id,
+        name: formData.name,
       },
-      designation: "test",
-      city: "jaipur",
-      pinCode: "302029",
-      address: "sanganer",
-      upiId: "235254364@ypl",
-      bankName: "Sbi",
-      accountName: "Vishnu Choudhary",
-      accountNumber: 23865265932,
-      ifscCode: "SBINOO1234",
+      designation: formData.designation,
+      city: formData.city,
+      pinCode: formData.pinCode,
+      address:formData.address,
+      upiId: formData.upiId,
+      bankName:formData.bankName,
+      accountName: formData.accountName,
+      accountNumber: formData.accountNumber,
+      ifscCode: formData.ifscCode,
     };
+  
     if (this.addStaffForm.valid) {
       console.log("Form is valid", this.addStaffForm.value);
-      this.service.addStaffData(paylode).subscribe((resp: any) => {
-        console.log(resp);
-        debugger;
-        if (resp) {
+      this.service.addStaffData(payload).subscribe(
+        (resp: any) => {
+          console.log(resp);
           if (resp.status === "success") {
             const message = "Staff has been added";
             this.messageService.add({ severity: "success", detail: message });
@@ -113,10 +117,21 @@ export class AddStaffComponent {
             const message = resp.message;
             this.messageService.add({ severity: "error", detail: message });
           }
+        },
+        (error: HttpErrorResponse) => {
+          console.error("Error occurred:", error);
+          if (error.status === 401) {
+            // Handle unauthorized access - possibly logout
+            console.log("Unauthorized - logging out");
+            // Add your logout logic here
+          } else {
+            const message = error.message;
+            this.messageService.add({ severity: "error", detail: message });
+          }
         }
-      });
+      );
     } else {
-      console.log("Form is inValid!");
+      console.log("Form is invalid!");
     }
   }
 }

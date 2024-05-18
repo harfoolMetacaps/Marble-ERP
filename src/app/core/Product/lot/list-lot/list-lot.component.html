@@ -58,12 +58,12 @@
                         <div class="card-body p-2">
 
                             <p-table [value]="lotData" [tableStyle]="{'min-width': '60rem'}" [paginator]="true"
-                                [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedlot">
+                                [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" >
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th appShowHide [roles]="['admin', 'super-admin']">
+                                        <!-- <th appShowHide [roles]="['admin', 'super-admin']">
                                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                                        </th>
+                                        </th> -->
                                         <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon>
                                             <p-columnFilter type="text" field="date" display="menu"></p-columnFilter>
                                         </th>
@@ -93,9 +93,9 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-lot>
                                     <tr>
-                                        <td appShowHide [roles]="['admin', 'super-admin']">
+                                        <!-- <td appShowHide [roles]="['admin', 'super-admin']">
                                             <p-tableCheckbox [value]="lot"></p-tableCheckbox>
-                                        </td>
+                                        </td> -->
                                         <td>{{lot.date}}</td>
                                         <td>{{lot.lotName}}</td>
                                         <td>{{lot.lotNo}}</td>

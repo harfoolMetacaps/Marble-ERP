@@ -63,9 +63,9 @@
 
                 <ng-template pTemplate="header">
                   <tr>
-                    <th style="width: 10%;" appShowHide [roles]="['admin', 'super-admin', 'help-desk']">
+                    <!-- <th style="width: 10%;" appShowHide [roles]="['admin', 'super-admin', 'help-desk']">
                       <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
+                    </th> -->
                     <th pSortableColumn="name" >Sub Category <p-sortIcon
                         field="name"></p-sortIcon>
                         <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
@@ -87,9 +87,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-subCategories>
                   <tr>
-                    <td appShowHide [roles]="['admin', 'super-admin', 'help-desk']">
+                    <!-- <td appShowHide [roles]="['admin', 'super-admin', 'help-desk']">
                       <p-tableCheckbox [value]="subCategories"></p-tableCheckbox>
-                    </td>
+                    </td> -->
                     <td>{{subCategories.name}}</td>
                     <td>{{subCategories.categoryId}}</td>
                     <td>{{subCategories.description}}</td>

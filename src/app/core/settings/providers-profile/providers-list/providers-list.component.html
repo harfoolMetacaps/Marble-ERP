@@ -59,9 +59,9 @@
 
               <ng-template pTemplate="header">
                 <tr>
-                  <th appShowHide [roles]="['admin', 'super-admin', 'provider']">
+                  <!-- <th appShowHide [roles]="['admin', 'super-admin', 'provider']">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                  </th>
+                  </th> -->
                   <th pSortableColumn="firstName">Name <p-sortIcon field="firstName"></p-sortIcon>
                     <p-columnFilter type="text" field="firstName" display="menu"></p-columnFilter>
                   </th>
@@ -78,9 +78,9 @@
               </ng-template>
               <ng-template pTemplate="body" let-provider>
                 <tr>
-                  <td appShowHide [roles]="['admin', 'super-admin', 'provider']">
+                  <!-- <td appShowHide [roles]="['admin', 'super-admin', 'provider']">
                     <p-tableCheckbox [value]="provider"></p-tableCheckbox>
-                  </td>
+                  </td> -->
                   <td class="">
                     <div class="d-flex align-items-center">
                     <img

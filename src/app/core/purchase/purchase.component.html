@@ -50,9 +50,9 @@
             <p-table [value]="purchaseData" [tableStyle]="{'min-width': '60rem'}" [paginator]="true" [rows]="5">
               <ng-template pTemplate="header">
                 <tr>
-                  <th appShowHide [roles]="['admin', 'super-admin']">
+                  <!-- <th appShowHide [roles]="['admin', 'super-admin']">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                  </th>
+                  </th> -->
                   <th pSortableColumn="purchaseInvoiceNumber">Invoice Number <p-sortIcon
                       field="purchaseInvoiceNumber"></p-sortIcon>
                     <p-columnFilter type="text" field="purchaseInvoiceNumber" display="menu"></p-columnFilter>
@@ -83,9 +83,9 @@
               </ng-template>
               <ng-template pTemplate="body" let-purchase>
                 <tr>
-                  <td appShowHide [roles]="['admin', 'super-admin']">
+                  <!-- <td appShowHide [roles]="['admin', 'super-admin']">
                     <p-tableCheckbox [value]="purchase"></p-tableCheckbox>
-                  </td>
+                  </td> -->
                   <td>{{purchase.purchaseInvoiceNumber}}</td>
                   <td>{{purchase.purchaseDate}}</td>
                   <td>{{purchase.supplier.name}}</td>
