@@ -1,12 +1,23 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { Router, RouterModule } from "@angular/router";
+import { MessageService, SharedModule } from "primeng/api";
+import { CalendarModule } from "primeng/calendar";
 import { DialogModule } from "primeng/dialog";
+import { DropdownModule } from "primeng/dropdown";
 import { TableModule } from "primeng/table";
 import { TabViewModule } from "primeng/tabview";
 import { ToastModule } from "primeng/toast";
+import { PaymentInService } from "src/app/core/payment-in/payment-in.service";
 import { SalesService } from "src/app/core/sales/sales.service";
 
 @Component({
@@ -19,80 +30,106 @@ import { SalesService } from "src/app/core/sales/sales.service";
     DialogModule,
     ToastModule,
     TabViewModule,
+    SharedModule,
     FormsModule,
+    CalendarModule,
+    DropdownModule,
+    ReactiveFormsModule,
   ],
   templateUrl: "./payments-invoice-dialog.component.html",
   styleUrl: "./payments-invoice-dialog.component.scss",
 })
 export class PaymentsInvoiceDialogComponent implements OnInit {
-  @Input() paymentVisible: boolean;
+  @Input() ShowPaymentInvoice: boolean;
   @Input() dataById: any = [];
-  // @Input() dataById: any = [];
   @Output() callbackModalForPayment = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
-  payableAmounts: string[]=[];
-  totalAmount: number= 0
-  
-  // Variables for additional charges and discount
-  discount: number = 0;
-  shipping: number = 0;
-  otherCharges: number = 0;
+  paymentInvoiceForm: FormGroup;
+  payableAmounts: string[] = [];
+  routes: { customers: string };
+  paymentModeList = [{
+    paymentMode: 'Cash'
+  },
+  {
+    paymentMode: 'Bank'
+  }];
+  dueAmount= this.dataById.dueAmount;
 
-  constructor(private salesServicePayment: SalesService) {}
+  notesRegex = /^(?:.{2,100})$/;
 
+  constructor(
+    private paymentInService: PaymentInService,
+    private messageService: MessageService,
+    private fb: FormBuilder,
+  ) {
+    this.paymentInvoiceForm = this.fb.group({
+      paymentDate: ["", [Validators.required]],
+      paymentMode: ["", [Validators.required]],
+      notes: ["", [Validators.required]],
+      // totalAmount: ["", [Validators.required,this.amountExceedsTotalValidator.bind(this)]],
+      totalAmount: ["", [Validators.required, Validators.max(this.dueAmount)]]
+    });
+  }
 
   ngOnInit() {
-    console.log("this is payment invoice component");
-    
-    // this.payableAmounts = new Array(this.dataById.salesItemDetails.length).fill('');
-
-    // console.log("id get in payment invoice popup ",this.dataById._id)
-    
-    // Fetch additional charges from API
-    // this.fetchAdditionalCharges();
 
   }
+
+  // amountExceedsTotalValidator(control: FormControl) {
+  //   const amount = control.value;
+  //   if (amount != null && amount > this.dataById.salesTotalAmount) {
+  //     return { amountExceedsTotal: true };
+  //   }
+  //   return null;
+  // }
 
   closeTheWindow() {
-    // debugger;
-    console.log("dialog close triggered in payment invoice component");
     this.close.emit();
-    console.log("this is customer payment data",this.dataById)
+    this.paymentInvoiceForm.reset();
+    // this.dataById=[]
   }
-
-
 
   onConfirm() {
     this.callbackModalForPayment.emit();
   }
 
+  paymentInvoiceFormSubmit() {
+    const formData = this.paymentInvoiceForm.value;
+    const payload = {
+      customer: this.dataById.customer,
+      paymentDate: formData.paymentDate,
+      paymentMode: formData.paymentMode,
+      sales: [
+        {
+          _id: this.dataById.salesId,
+          amount: formData.totalAmount,
+        }
+      ],
+      notes: formData.notes,
+    }
 
 
-  // fetchAdditionalCharges() {
-  //   this.salesServicePayment.GetSalesDataById(this.dataById._id).subscribe((response: any) => {
-  //     this.discount = response.discount || 0;
-  //     this.shipping = response.shipping || 0;
-  //     this.otherCharges = response.otherCharges || 0;
-  //     this.updateTotal();
-  //     console.log("this is discount in payment invoice", this.discount)
-  //   });
-  // }
+    if (this.paymentInvoiceForm.valid) {
+      this.paymentInService.createPayment(payload).subscribe((resp: any) => {
+        console.log(resp);
+        if (resp) {
+          if (resp.status === "success") {
+            const message = "Payment has been added";
+            this.messageService.add({ severity: "success", detail: message });
+            setTimeout(() => {
+              this.close.emit();
+              this.paymentInvoiceForm.reset();
+            }, 400);
+          } else {
+            const message = resp.message;
+            this.messageService.add({ severity: "error", detail: message });
+          }
+        }
+      });
+    }
+    else {
+      console.log("invalid form");
 
-  updateTotal() {
-    const totalPayable = this.payableAmounts.reduce((sum, current) => {
-      // Convert current to number using parseFloat, and handle empty strings gracefully
-      const value = parseFloat(current) || 0;
-      return sum + value;
-    }, 0);
-    // Calculate total amount
-    this.totalAmount = totalPayable - this.dataById.discount + this.shipping + this.otherCharges;
+    }
   }
 }
-
-
-
-
-
-
-
-
